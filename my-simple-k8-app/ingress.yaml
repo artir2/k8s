@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  labels:
+    argocd.argoproj.io/instance: simple-app-olak
+
+spec:
+  ingressClassName: cilium
+  rules:
+    - host: artir2.nkube.napet.dyn.nesc.nokia.net
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: http-echo-service
+                port:
+                  number: 80
