@@ -12,14 +12,19 @@ spec:
       app: http-echo
   template:
     metadata:
+      creationTimestamp: null
       labels:
         app: http-echo
-  spec:
+    spec:
       containers:
-        - name: http-echo-container
-          image: registry.napet.dyn.nesc.nokia.net/external/utils/hashicorp/http-echo
-          ports:
-            - containerPort: 5678
-          args:
-            - "--text"
-            - "Co jest grane"
+      - args:
+        - -text
+        - WTF
+        image: registry.napet.dyn.nesc.nokia.net/external/utils/hashicorp/http-echo
+        imagePullPolicy: Always
+        name: http-echo
+        ports:
+        - containerPort: 5678
+          protocol: TCP
+        resources: {}
+        
