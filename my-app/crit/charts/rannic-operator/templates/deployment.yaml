@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rannic-operator
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      application: rannic-operator
+  template:
+    metadata:
+      labels:
+        application: rannic-operator
+    spec:
+      serviceAccountName: rannic-operator-account
+      containers:
+      - name: rannic-operator
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}

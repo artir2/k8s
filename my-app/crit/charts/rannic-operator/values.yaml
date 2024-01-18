@@ -1,0 +1,3 @@
+image:
+  repository: registry.napet.dyn.nesc.nokia.net/production/cran/rannic-python 
+  tag: 23.5-67119 

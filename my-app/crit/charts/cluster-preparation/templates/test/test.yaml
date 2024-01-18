@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ include "cluster-preparation.fullname" . }}--{{ .Release.Namespace }}-{{ .Release.Name }}-{{ uuidv4 }}
+  labels:
+    {{- include "cluster-preparation.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - image: registry1-docker-io.repo.lab.pl.alcatel-lucent.com/alpine:3.5
+      command:
+        - /bin/sh
+        - "-c"
+        - "echo 'Test that returns {{ .Values.test.returnCode }}' ; sleep {{ .Values.test.testDelay }}; exit {{ .Values.test.returnCode }}; "
+      imagePullPolicy: {{ .Values.image.pullPolicy }}
+      name: "{{ .Values.fullnameOverride }}-test"
+  restartPolicy: Never

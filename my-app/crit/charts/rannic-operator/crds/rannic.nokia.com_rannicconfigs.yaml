@@ -1,0 +1,299 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.9.0
+  creationTimestamp: null
+  name: rannicconfigs.rannic.nokia.com
+spec:
+  group: rannic.nokia.com
+  names:
+    kind: RanNicConfig
+    listKind: RanNicConfigList
+    plural: rannicconfigs
+    shortNames:
+    - rnc
+    singular: rannicconfig
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.configStatus
+      name: Status
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: RanNicConfig describes configuration of RAN NIC
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: RanNicConfigSpec is the spec for a RanNicConfig resource
+            properties:
+              ranNicSoftwareImage:
+                description: RAN NIC L1 SW OCI compliant image configuration, including
+                  image addr and pull secret
+                properties:
+                  imageAddr:
+                    description: 'The RAN NIC L1 SW OCI compliant image address. One
+                      example of OCP local registry: <image_registry>/<vdu_namespace>/<rannic_sw_image_name>:<rannic_sw_image_tag>'
+                    type: string
+                  imagePullSecret:
+                    description: The Kubernetes secret name that stores credential
+                      authentication of target image registry, only kubernetes.io/dockercfg
+                      and kubernetes.io/dockerconfigjson types secret supported.
+                    type: string
+                required:
+                - imageAddr
+                - imagePullSecret
+                type: object
+            required:
+            - ranNicSoftwareImage
+            type: object
+          status:
+            description: RanNicConfigStatus defines the observed state of RanNicConfig
+            properties:
+              configMessage:
+                description: Readable message about RAN-NIC rannicconfigs operation,
+                  which is supplement for configStatus
+                type: string
+              configStatus:
+                description: The rannicconfig CR operation overall status
+                enum:
+                - Initializing
+                - Terminating
+                - Succeeded
+                - Failed
+                type: string
+              nodeConfigs:
+                items:
+                  properties:
+                    inventory:
+                      description: 'todo: keep alian with RanNicNodeConfig'
+                      items:
+                        properties:
+                          ranNicConfigMessage:
+                            description: Readable message about RAN NIC operation,
+                              which is a supplement to ranNicConfigStatus
+                            type: string
+                          ranNicConfigStatus:
+                            description: RAN NIC configuration status,original is
+                              Initial and will be updated during rannicnodeconfig
+                              CR updating phase
+                            enum:
+                            - Initial
+                            - Activating
+                            - ActivateFailed
+                            - ActivateSucceeded
+                            - Deactivating
+                            - DeactivateFailed
+                            type: string
+                          ranNicIdentity:
+                            description: RAN NIC HW identity information, which is
+                              collected and updated during rannicnodeconfig CR creating
+                              phase
+                            properties:
+                              deviceID:
+                                type: string
+                              pciAddress:
+                                type: string
+                              vendorID:
+                                type: string
+                            type: object
+                          ranNicLivenessProbeMessage:
+                            type: string
+                          ranNicLivenessProbeStatus:
+                            type: string
+                          runningSoftwareImage:
+                            description: Current loaded RAN NIC software image, which
+                              is updated when RAN NIC activated successfully
+                            properties:
+                              imageAddr:
+                                type: string
+                              imagePullSecret:
+                                type: string
+                            type: object
+                        type: object
+                      type: array
+                    nodeConfigName:
+                      description: The rannicnodeconfig CR name
+                      type: string
+                    nodeConfigStatus:
+                      description: The rannicnodeconfig operation overall status,
+                        original status is Initial and will be updated during rannicnodeconfig
+                        CR updating phase
+                      type: string
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: false
+    storage: false
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.configStatus
+      name: Status
+      type: string
+    - jsonPath: .spec.ranNicReplicas
+      name: Required
+      type: integer
+    - jsonPath: .status.allocationInfo.allocatedRanNicReplicas
+      name: Allocated
+      type: integer
+    - jsonPath: .status.allocationInfo.activatedRanNicReplicas
+      name: Activated
+      type: integer
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The spec parameters definition of rannicconfig CR
+            properties:
+              ranNicReplicas:
+                default: 1
+                description: The required number of RAN NIC device
+                minimum: 1
+                type: integer
+              ranNicSoftwareImage:
+                description: RAN NIC SW container image information, including image
+                  addr and pull secret
+                properties:
+                  imageAddr:
+                    description: 'The RAN NIC SW container image address. One example
+                      of OCP local registry: <image_registry>/<vdu_namespace>/<rannic_sw_image_name>:<rannic_sw_image_tag>'
+                    type: string
+                  imagePullSecret:
+                    description: The Kubernetes secret name that stores credential
+                      authentication of target image registry, only kubernetes.io/dockercfg
+                      and kubernetes.io/dockerconfigjson types secret supported. RAN
+                      NIC SW controller will try to pull target image without authentication
+                      if this field configured as empty string
+                    type: string
+                required:
+                - imageAddr
+                - imagePullSecret
+                type: object
+            required:
+            - ranNicSoftwareImage
+            type: object
+          status:
+            properties:
+              allocationInfo:
+                properties:
+                  activatedRanNicReplicas:
+                    description: Total number of latest selected and successful activated
+                      RAN NIC device(s)
+                    type: integer
+                  allocatedRanNicReplicas:
+                    description: Total number of latest selected RAN NIC device(s)
+                    type: integer
+                  requiredRanNicReplicas:
+                    description: Total number of latest required RAN NIC device(s)
+                      that observed by controller
+                    type: integer
+                type: object
+              configMessage:
+                description: Readable message about configuration status of rannicconfig
+                  CR, which is supplement for configStatus
+                type: string
+              configStatus:
+                description: Overall configuration status of rannicconfig CR
+                enum:
+                - Initializing
+                - Terminating
+                - Succeeded
+                - Failed
+                type: string
+              ranNicDevices:
+                items:
+                  properties:
+                    configMessage:
+                      description: Readable message about RAN NIC configuration, which
+                        is a supplement to configStatus
+                      type: string
+                    configStatus:
+                      description: RAN NIC configuration status
+                      enum:
+                      - Initial
+                      - Activating
+                      - ActivateFailed
+                      - ActivateSucceeded
+                      - Deactivating
+                      - DeactivateFailed
+                      type: string
+                    identity:
+                      description: RAN NIC HW PCI information
+                      properties:
+                        deviceID:
+                          type: string
+                        pciAddress:
+                          type: string
+                        vendorID:
+                          type: string
+                      type: object
+                    image:
+                      description: Current loaded RAN NIC SW image, which is updated
+                        when RAN NIC activated successfully
+                      properties:
+                        imageAddr:
+                          description: 'The RAN NIC SW container image address. One
+                            example of OCP local registry: <image_registry>/<vdu_namespace>/<rannic_sw_image_name>:<rannic_sw_image_tag>'
+                          type: string
+                        imagePullSecret:
+                          description: The Kubernetes secret name that stores credential
+                            authentication of target image registry, only kubernetes.io/dockercfg
+                            and kubernetes.io/dockerconfigjson types secret supported.
+                            RAN NIC SW controller will try to pull target image without
+                            authentication if this field configured as empty string
+                          type: string
+                      required:
+                      - imageAddr
+                      - imagePullSecret
+                      type: object
+                    ranNicNodeConfigName:
+                      description: Associated rannicnodeconfig CR name
+                      type: string
+                  required:
+                  - identity
+                  - ranNicNodeConfigName
+                  type: object
+                type: array
+            required:
+            - configStatus
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

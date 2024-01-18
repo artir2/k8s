@@ -1,0 +1,10 @@
+replicas: 3
+ingress:
+  enabled: true
+  name: my-ingress
+
+ports:
+  - port: 85
+    targetPort: 5678
+
+echoAppText: "Łapy, łapy, łapy, w góre, góre, ure !!!"

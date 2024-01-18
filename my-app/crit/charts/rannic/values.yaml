@@ -1,0 +1,42 @@
+annotations:
+  testcase:
+  - delay: 10
+    status:
+      allocationInfo:
+        activatedRanNicReplicas: 1
+        allocatedRanNicReplicas: 1
+        requiredRanNicReplicas: 1
+      configMessage: Progressing
+      configStatus: Failed
+      ranNicDevices: 
+        - configMessage: Default message
+          configStatus: Initial
+          identity:
+            deviceID: "123"
+            pciAddress: "123"
+            vendorID: vendor
+          image:
+            imageAddr: registry/image:tag
+            imagePullSecret: allways
+          ranNicNodeConfigName: name
+  - delay: 40
+    status:
+      allocationInfo:
+        activatedRanNicReplicas: 2
+        allocatedRanNicReplicas: 2
+        requiredRanNicReplicas: 2
+      configMessage: Finished initialization
+      configStatus: Succeeded
+      ranNicDevices: 
+        - configMessage: Default message
+          configStatus: ActivateSucceeded
+          identity:
+            deviceID: "123"
+            pciAddress: "123"
+            vendorID: vendor
+          image:
+            imageAddr: registry/image:tag
+            imagePullSecret: allways
+          ranNicNodeConfigName: name
+
+

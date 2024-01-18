@@ -1,0 +1,21 @@
+# Number of parallel pulls of the images
+parallelism: 2
+
+# Max retries allowed
+backoffLimit: 6
+
+image:
+  repository: "registry.napet.dyn.nesc.nokia.net/external/infra/skopeo"
+  tag: "v1.11.1"
+
+# Repository where target images are stored
+target:
+  repository: ""
+
+# Images to be pulled
+imageList:
+  - image: "" # name:tag
+    name: "" # kubernetes job name (for example image-name)
+
+nodeSelector:
+  slayer: ready

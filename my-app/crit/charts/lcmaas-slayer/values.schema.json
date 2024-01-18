@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "required": ["schema", "perf"],
+  "properties": {
+    "schema": {
+      "type": "object",
+      "required": ["firstSchemaTestingString", "secondSchemaTestingString"],
+      "properties": {
+        "firstSchemaTestingString": {
+          "type": "string",
+          "pattern": "^[a-zA-Z]+$"
+        },
+        "secondSchemaTestingString": {
+          "type": "string",
+          "pattern": "^[a-zA-Z]+$"
+        }
+      }
+    },
+    "perf": {
+      "type": "object",
+      "required": ["maxSecrets", "maxConfigMaps", "stressCount"],
+      "properties": {
+        "maxSecrets": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "maxConfigMaps": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "stressCount": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  }
+}

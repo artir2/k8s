@@ -1,0 +1,23 @@
+rannic-operator:
+  enabled: false
+
+rannic:
+  enabled: false
+
+cluster-preparation:
+  enabled: false
+  schema:
+    secondSchemaTestingString: "test"
+
+prerequisite:
+  enabled: false
+  schema:
+    secondSchemaTestingString: "test"
+
+harbor-slayer:
+  enabled: false
+  parallelism: 1
+  backoffLimit: 6
+
+lcmaas-slayer:
+  enabled: true

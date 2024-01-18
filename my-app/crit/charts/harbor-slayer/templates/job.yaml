@@ -1,0 +1,30 @@
+{{- $root := . -}}
+{{- range $v := .Values.imageList }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "harbor-slayer-{{ $v.name }}"
+spec:
+  parallelism: {{ $root.Values.parallelism }}
+  completions: {{ $root.Values.parallelism }}
+  template:
+    spec:
+      {{- if $root.Values.nodeSelector }}
+      nodeSelector:
+        {{- range $key, $val := $root.Values.nodeSelector }}
+        {{ $key }}: {{ $val }}
+        {{- end }}
+      {{- end }}
+      containers:
+        - name: "harbor-slayer-{{ $v.name }}"
+          image: "{{ $root.Values.image.repository }}:{{ $root.Values.image.tag }}"
+          imagePullPolicy: {{ $root.Values.image.pullPolicy }}
+          args: 
+          - "copy"
+          - "docker://{{ $root.Values.target.repository }}{{ $v.image }}"
+          - "dir:/mnt"
+          - "--src-tls-verify=false"
+      restartPolicy: Never
+  backoffLimit: {{ $root.Values.parallelism }}
+---
+{{- end }}

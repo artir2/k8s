@@ -1,0 +1,12 @@
+apiVersion: "rannic.nokia.com/v1beta1"
+kind: RanNicConfig
+metadata:
+  name: sample-rannic-config
+  annotations:
+    napet.io/testcase: {{ toJson .Values.annotations.testcase | quote}}
+spec:
+  ranNicReplicas: 2
+  ranNicSoftwareImage:
+    imageAddr: "image-registry.openshift-image-registry.svc:5000/cran1/ran-nic-sw:0.300.12565"
+    imagePullSecret: "default-dockercfg-qpn7f"
+

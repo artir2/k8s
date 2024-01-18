@@ -1,0 +1,31 @@
+apiVersion: v2
+appVersion: 1.16.0
+dependencies:
+- condition: harbor-slayer.enabled
+  name: harbor-slayer
+  repository: ""
+  version: 1.*
+- condition: lcmaas-slayer.enabled
+  name: lcmaas-slayer
+  repository: ""
+  version: 1.*
+- condition: cluster-preparation.enabled
+  name: cluster-preparation
+  repository: ""
+  version: 1.*
+- condition: prerequisite.enabled
+  name: prerequisite
+  repository: ""
+  version: 1.*
+- condition: rannic-operator.enabled
+  name: rannic-operator
+  repository: ""
+  version: 1.*
+- condition: rannic.enabled
+  name: rannic
+  repository: ""
+  version: 1.*
+description: A Helm chart for Kubernetes
+name: crit
+type: application
+version: 23.5.67605
