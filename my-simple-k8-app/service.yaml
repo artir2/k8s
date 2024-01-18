@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: simple-service
+  name: http-echo-service
 spec:
   selector:
-    app: trivial-go-web-app
+    app: http-echo
   ports:
-      - targetPort: 8080
-        protocol: TCP
-        port: 8080
-  type: LoadBalancer
+    - protocol: TCP
+      port: 85
+      targetPort: 5678
+  type: ClusterIP

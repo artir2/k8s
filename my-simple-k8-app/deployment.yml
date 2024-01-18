@@ -1,37 +1,22 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: simple-deployment
-  annotations:
-    datree.skip/DEPLOYMENT_INCORRECT_REPLICAS_VALUE: irrelevant for hackathon purposes, skipping.
+  name: http-echo-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: trivial-go-web-app
+      app: http-echo
   template:
     metadata:
       labels:
-        app: trivial-go-web-app
-    spec:
+        app: http-echo
+  spec:
       containers:
-      - name: webserver-simple
-        image: docker.io/kostiscodefresh/gitops-simple-app:v1.0
-        ports:
-        - containerPort: 8080
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 8080
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 8080
+        - name: http-echo-container
+          image: registry.napet.dyn.nesc.nokia.net/external/utils/hashicorp/http-echo
+          ports:
+            - containerPort: 5678
+          args:
+            - "--text"
+            - "Co jest grane"
