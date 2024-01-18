@@ -12,9 +12,9 @@ spec:
 
   # Source of the application manifests
   source:
-    repoURL: https://github.com/<your-argo-repo-fork>.git
+    repoURL: https://github.com/artir2/k8s.git
     targetRevision: HEAD
-    path: ./simple-k8s-app
+    path: ./my-simple-k8s-app
    
   # Destination cluster and namespace to deploy the application
   destination:
