@@ -13,7 +13,7 @@ spec:
 
   # Source of the application manifests
   source:
-    repoURL: https://github.com/<your-argo-repo-fork>.git
+    repoURL: https://github.com/artir2/k8s.git
     targetRevision: HEAD
     path: ./app-of-apps/simple-argo-apps
    
